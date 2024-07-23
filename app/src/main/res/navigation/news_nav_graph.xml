@@ -27,7 +27,7 @@
         android:name="com.mukund.newsapp.ui.fragments.HeadlineFragment"
         android:label="HeadlineFragment" >
         <action
-            android:id="@+id/action_headlineFragment_to_articleFragment2"
+            android:id="@+id/action_headlineFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
