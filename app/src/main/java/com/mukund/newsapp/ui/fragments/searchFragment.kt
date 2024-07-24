@@ -2,11 +2,9 @@ package com.mukund.newsapp.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Button
 import android.widget.TextView
@@ -17,10 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.InvalidationTracker
 import com.mukund.newsapp.R
 import com.mukund.newsapp.adapters.NewsAdapter
-import com.mukund.newsapp.databinding.FragmentFavouriteBinding
 import com.mukund.newsapp.databinding.FragmentSearchBinding
 import com.mukund.newsapp.ui.NewsActivity
 import com.mukund.newsapp.ui.NewsViewModel
@@ -38,12 +34,12 @@ class searchFragment : Fragment(R.layout.fragment_search) {
     lateinit var retryButton: Button
     lateinit var errorText: TextView
     lateinit var itemSearchError: CardView
-    lateinit var binding: FragmentSearchBinding
+    lateinit var bindinng: FragmentSearchBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSearchBinding.bind(view)
+        bindinng = FragmentSearchBinding.bind(view)
 
         itemSearchError = view.findViewById(R.id.itemSearchError)
 
@@ -65,7 +61,7 @@ class searchFragment : Fragment(R.layout.fragment_search) {
         }
 
         var job: Job? = null
-        binding.searchEdit.addTextChangedListener() { editable ->
+        bindinng.searchEdit.addTextChangedListener() { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_NEWS_TIME_DELAY)
@@ -88,7 +84,7 @@ class searchFragment : Fragment(R.layout.fragment_search) {
                             newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                         isLastPage = newsViewModel.searchNewsPage == totalPages
                         if (isLastPage) {
-                            binding.recyclerSearch.setPadding(0, 0, 0, 0)
+                            bindinng.recyclerSearch.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -109,8 +105,8 @@ class searchFragment : Fragment(R.layout.fragment_search) {
         })
 
         retryButton.setOnClickListener {
-            if (binding.searchEdit.text.toString().isNotEmpty()) {
-                newsViewModel.searchNews(binding.searchEdit.text.toString())
+            if (bindinng.searchEdit.text.toString().isNotEmpty()) {
+                newsViewModel.searchNews(bindinng.searchEdit.text.toString())
             } else {
                 hideErrorMessage()
             }
@@ -123,12 +119,12 @@ class searchFragment : Fragment(R.layout.fragment_search) {
     var isScrolling = false
 
     private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
+        bindinng.paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
     }
 
     private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
+        bindinng.paginationProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
@@ -159,7 +155,7 @@ class searchFragment : Fragment(R.layout.fragment_search) {
             val shouldPaginate =
                 isNoErrors && isNotAtBegining && isNotLoadingAndNotLastPage && isLastItem && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                newsViewModel.searchNews(binding.searchEdit.text.toString())
+                newsViewModel.searchNews(bindinng.searchEdit.text.toString())
                 isScrolling = false
             }
         }
@@ -175,7 +171,7 @@ class searchFragment : Fragment(R.layout.fragment_search) {
 
     private fun setUpSearchRecycler() {
         newsAdapter = NewsAdapter()
-        binding.recyclerSearch.apply {
+        bindinng.recyclerSearch.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@searchFragment.scrollListener)
